@@ -1,0 +1,20 @@
+<div class="col-md-8 col-md-offset-2">
+    <!-- Pass javascript object version of form -->
+    <form ngNativeValidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+            <label for="content">Content</label>
+            <!-- Local reference: #input that can be used by event binding-->
+            <!-- <input type="text" id="content" class="form-control" #input> -->
+            <input 
+                type="text" 
+                id="content" 
+                class="form-control"
+                ngModel
+                name="content"
+                required>
+            <!-- ngModel exposes name="content" to the backend -->
+        </div>
+        <!-- <button class="btn btn-primary" type="submit" (click)="onSave(input.value)">Save</button> -->
+        <button class="btn btn-primary" type="submit">Save</button> 
+    </form>
+</div>
