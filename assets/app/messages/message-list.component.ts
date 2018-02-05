@@ -8,10 +8,11 @@ import { MessageService } from './message.service';
         <!-- $event holds the value you passed -->
         <div class="col-md-8 col-md-offset-2">
             <app-message 
-            [inputMessage]="message" 
-            (editClicked)="message.content = $event"
+            [inputMessage]="message"
             *ngFor="let message of messages"></app-message>
-        </div>`,
+            <!--(editClicked)="message.content = $event"-->
+        </div>
+    `,
     // Creates an instance of MessageService only for this component!
     // Add it to app.component instead to share this instance with its child components
     //providers: [MessageService]
@@ -23,6 +24,11 @@ export class MessageListComponent implements OnInit{
     constructor(private messageService: MessageService) {}
 
     ngOnInit() {
-        this.messages = this.messageService.getMessages();
+        this.messageService.getMessages()
+            .subscribe(
+                (messages: Message[]) => {
+                    this.messages = messages;
+                }
+            )
     }
 }
