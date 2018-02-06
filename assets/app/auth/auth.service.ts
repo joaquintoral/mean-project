@@ -25,4 +25,12 @@ export class AuthService {
             .map((response: Response) => response.json()) // to transform the data we get back. This needs rxjs/rx
             .catch((error: Response) => Observable.throw(error.json()));
     }
+
+    logout() {
+        localStorage.clear();
+    }
+
+    isLoggedIn() {
+        return localStorage.getItem('token') !==  null;
+    }
 }

@@ -24,7 +24,8 @@ export class MessageService {
         // map((response: Response) => response.json() assigns reponse.json() to response.
         // .catch doesn't turn the return statement to observable automatically, while .map does.
         const headers = new Headers({'Content-Type': 'application/json'});
-        return this.http.post('http://localhost:3000/message', requestBody, {headers: headers})
+        const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return this.http.post('http://localhost:3000/message' + token, requestBody, {headers: headers})
             .map((response: Response) => {
                 const result = response.json();
                 // .obj.content refers to the result found in the router/message
@@ -60,14 +61,16 @@ export class MessageService {
     updateMessage(message: Message) {
         const requestBody = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
-        return this.http.patch('http://localhost:3000/message/' + message.messageId, requestBody, {headers: headers})
+        const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+
+        return this.http.patch('http://localhost:3000/message/' + message.messageId + token, requestBody, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
 
     deleteMessage(message: Message) {
         this.messages.splice(this.messages.indexOf(message), 1);
-        return this.http.delete('http://localhost:3000/message/' + message.messageId)
+        return this.http.delete('http://localhost:3000/message/' + message.messageId + token)
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }
