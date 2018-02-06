@@ -12,9 +12,7 @@ export class MessageService {
     private messages: Message[] = [];
     messageIsEdit = new EventEmitter<Message>();
 
-    constructor(private http: Http) {
-
-    }
+    constructor(private http: Http) {}
 
     addMessage(message: Message) {
         const requestBody = JSON.stringify(message);
@@ -70,6 +68,9 @@ export class MessageService {
 
     deleteMessage(message: Message) {
         this.messages.splice(this.messages.indexOf(message), 1);
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
         return this.http.delete('http://localhost:3000/message/' + message.messageId + token)
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));

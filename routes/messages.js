@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
-var User = require('../models/user')
+var User = require('../models/user');
 
 var Message = require('../models/message');
 
@@ -48,7 +48,7 @@ router.post('/', function (req, res, next) {
             return res.status(500).json({
                 title: 'An error occurred',
                 error: err
-            })
+            });
         }
 
         var message = new Message({
