@@ -8,6 +8,8 @@ var Message = require('../models/message');
 
 router.get('/', function(req, res, next) {
     Message.find()
+    // name of the field(user), 2nd is the data i want to have (firstname)
+        .populate('user', 'firstName')
         .exec(function(err, messages) {
             if(err) {
                 return res.status(500).json({
@@ -64,7 +66,7 @@ router.post('/', function (req, res, next) {
                 });
             }
 
-            user.messages.push(result);
+            user.messages.push(result.toObject());
             user.save();
 
             res.status(201).json({
@@ -77,6 +79,8 @@ router.post('/', function (req, res, next) {
 
 // HTTP word, used to change existing data. Put to override existing data
 router.patch('/:id', function(req, res, next) {
+    // retrieve user from token
+    var decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, function(err, message) {
         if(err) {
             return res.status(500).json({
@@ -91,6 +95,12 @@ router.patch('/:id', function(req, res, next) {
                     message: 'Message not found'
                 }
             });
+        }
+        if(message.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not authenticated',
+                error: {message: 'Users do not match'}
+            })
         }
 
         message.content = req.body.content;
@@ -112,6 +122,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
+    var decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, function(err, message) {
         if(err) {
             return res.status(500).json({
@@ -119,6 +130,7 @@ router.delete('/:id', function(req, res, next) {
                 error: err
             });
         }
+
         if(!message) {
             return res.status(500).json({
                 title: 'No message found!',
@@ -126,6 +138,13 @@ router.delete('/:id', function(req, res, next) {
                     message: 'Message not found'
                 }
             });
+        }
+
+        if(message.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not authenticated',
+                error: {message: 'Users do not match'}
+            })
         }
 
         message.remove(function(err, result) {
