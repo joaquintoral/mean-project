@@ -1,4 +1,5 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Error } from './error.model';
 
 @Injectable()
 export class ErrorService {
