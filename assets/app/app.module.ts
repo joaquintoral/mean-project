@@ -1,45 +1,30 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from "./app.component";
-import { MessageComponent } from "./messages/message.component";
-import { MessageListComponent } from './messages/message-list.component';
-import { MessageInputComponent } from './messages/message-input.component';
-import { MessagesComponent } from './messages/messages.component';
 import { AuthenticationComponent } from './auth/authentication.component';
 import { HeaderComponent } from './header.component';
 import { routing } from './app.routing';
-import { LogoutComponent } from './auth/logout.component';
-import { SignupComponent } from './auth/signup.component';
-import { SigninComponent } from './auth/signin.component';
 import { AuthService } from "./auth/auth.service";
+import { MessageModule } from "./messages/message.module";
 import { ErrorService } from "./error/error.service";
 import { ErrorComponent } from "./error/error.component";
 
 @NgModule({
-    providers: [AuthService, ErrorService],
     declarations: [
-        AppComponent, 
-        MessageComponent,
-        MessageListComponent,
-        MessageInputComponent,
-        MessagesComponent,
+        AppComponent,
         AuthenticationComponent,
         HeaderComponent,
-        LogoutComponent,
-        SignupComponent,
-        SigninComponent,
         ErrorComponent
     ],
     imports: [
-        BrowserModule, 
-        FormsModule, 
-        routing, 
-        ReactiveFormsModule,
-        HttpModule
+        BrowserModule,
+        routing,
+        HttpModule,
+        MessageModule
     ],
+    providers: [AuthService, ErrorService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
